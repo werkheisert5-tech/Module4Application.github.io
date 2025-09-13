@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Warm Neutral (Slate, Sky Blue) -->
-    <!-- Application Structure Plan: The SPA is designed with a top-level tabbed navigation to allow users to quickly access different thematic areas of the guide: Overview, Why Use Tech?, Decision Making, Building Support, Key Considerations, Resources, and References. This non-linear structure is more user-friendly than a long-scrolling document. The 'Decision Making' section uses an internal step-by-step format, and the 'Building Support' section uses accordions to manage content density. This architecture prioritizes user-directed exploration and makes the information highly accessible. -->
-    <!-- Visualization & Content Choices: Report Info: Benefits/Challenges -> Goal: Compare -> Presentation: Side-by-side icon-enhanced lists for quick scanning. Interaction: Hover effects. Justification: Easy comparison of pros and cons. | Report Info: TPACK Framework -> Goal: Organize/Inform -> Presentation: HTML/CSS diagram. Interaction: Clickable sections to reveal descriptions. Justification: Interactive exploration of a key concept without static images. | Report Info: Training/Committees -> Goal: Organize -> Presentation: Accordion component. Interaction: Click to expand/collapse. Justification: Manages large blocks of text, keeping the UI clean. -->
+    <!-- Application Structure Plan: The SPA is now structured with eight tabs for comprehensive coverage: Overview, Why Use Tech?, Tech in Action, Making Decisions, Building Support, Key Considerations, Author's Reflection, and References. This thematic structure allows users to easily find specific information. Interactive elements like embedded videos and accordions are used to manage content and increase engagement. This architecture is designed for clarity and ease of use, ensuring all required assignment elements are present and logically organized. -->
+    <!-- Visualization & Content Choices: Report Info: Types of technology -> Goal: Inform/Organize -> Presentation: A new tab "Tech in Action" with categorized lists and icons. Interaction: Simple hover effects. Justification: Clearly organizes different technology types as required. | Report Info: Reflection questions -> Goal: Conclude/Synthesize -> Presentation: A new "Author's Reflection" tab with formatted Q&A. Justification: Directly addresses the assignment's conclusion requirement in a personal, clear format. | Report Info: All other sections -> Goal: Enhance Detail -> Presentation: Expanded text with in-text citations. Justification: Adds academic rigor and depth to the guide. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -30,24 +30,11 @@
         }
         .content-section.active {
             display: block;
+            animation: fadeIn 0.5s ease-in-out;
         }
-        .tpack-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: absolute;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .tpack-circle:hover {
-            transform: scale(1.05);
-            z-index: 20;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .accordion-header.active .accordion-icon {
             transform: rotate(180deg);
@@ -60,6 +47,21 @@
         .reference-item {
             text-indent: -36px;
             margin-left: 36px;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -76,9 +78,11 @@
         <nav class="flex flex-wrap justify-center gap-2 mb-8" id="main-nav">
             <button data-target="overview" class="nav-tab tab-active px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Overview</button>
             <button data-target="why-tech" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Why Use Tech?</button>
+            <button data-target="tech-in-action" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Tech in Action</button>
             <button data-target="decisions" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Making Decisions</button>
             <button data-target="support" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Building Support</button>
             <button data-target="considerations" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Key Considerations</button>
+            <button data-target="reflection" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Author's Reflection</button>
             <button data-target="resources" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">Resources</button>
             <button data-target="references" class="nav-tab tab-inactive px-4 py-2 text-sm md:text-base font-semibold rounded-full shadow-sm transition-colors duration-300">References</button>
         </nav>
@@ -88,31 +92,33 @@
 
             <!-- Overview Section -->
             <section id="overview" class="content-section active">
-                <h2 class="text-2xl font-bold text-sky-700 mb-4">Welcome</h2>
-                <img src="https://storage.googleapis.com/gemini-prod/images/2290f671-8e9f-4dd7-8919-866d1235b2e5.jpeg" alt="A vibrant and modern classroom where a diverse group of students are happily engaged with technology, with a teacher facilitating in the background." class="w-full h-64 object-cover rounded-xl mb-6 shadow-md">
-                <p class="text-slate-600 mb-6">This interactive guide is designed for educators, administrators, and technology leaders. It provides a clear overview of the critical aspects of instructional technology, from understanding its benefits and challenges to making informed decisions about its implementation. Use this guide to navigate the complexities of technology integration and develop a strategic approach that enhances teaching and learning in your organization.</p>
-                <div class="bg-slate-50 border-l-4 border-sky-500 p-4 rounded-r-lg">
-                    <h3 class="font-bold text-lg mb-2">A Note on Philosophy</h3>
-                    <p class="text-slate-600">Effective technology integration is not just about having the latest gadgets. It's about a thoughtful, intentional process that aligns technology with pedagogical goals and student needs. Technology should always be in service of learning. This guide reflects a belief that a human-centered, collaborative, and informed decision-making process is the key to unlocking technology's potential to transform education.</p>
+                <h2 class="text-2xl font-bold text-sky-700 mb-4">Introduction: The Role of Technology Leadership</h2>
+                <div class="video-container rounded-xl mb-6 shadow-md">
+                    <iframe src="https://www.youtube.com/embed/SYxFOSTR2WM?si=eYV_Jg3JvV4YgK3Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                 <p class="text-slate-600 mb-4">This interactive guide is designed for educators, administrators, and technology leaders navigating the complex landscape of instructional technology. Its purpose is to provide a clear, actionable framework for making informed decisions that enhance teaching and learning. The modern educational leader must act as both an "instructional leader and digital evangelist," creating a vision for technology while also coaching teachers through the transition (Project Tomorrow, 2018). This requires a deep understanding of not just the technology itself, but its pedagogical potential and the human factors involved in its successful adoption.</p>
+                <p class="text-slate-600 mb-6">Effective technology integration is not just about having the latest gadgets. It's about a thoughtful, intentional process that aligns technology with clear pedagogical goals and student needs. Technology should always be in service of learning. This guide reflects a belief that a human-centered, collaborative, and informed decision-making process is the key to unlocking technology's potential to transform education (Shinas & Steckel, 2017).</p>
+                 <div class="bg-slate-50 border-l-4 border-sky-500 p-4 rounded-r-lg">
+                    <h3 class="font-bold text-lg mb-2">How This Guide Helps</h3>
+                    <p class="text-slate-600">By exploring the sections in this guide, you will learn how to: evaluate the benefits and challenges of technology, implement a structured decision-making process, build a supportive culture through training and collaboration, and address critical policy and infrastructure needs.</p>
                 </div>
             </section>
 
             <!-- Why Use Tech? Section -->
             <section id="why-tech" class="content-section">
                 <h2 class="text-2xl font-bold text-sky-700 mb-2">The Double-Edged Sword of Technology</h2>
-                <p class="text-slate-600 mb-6">Instructional technology offers transformative potential but also comes with significant challenges. Understanding both sides is the first step toward effective implementation. Explore the benefits and challenges below to build a balanced perspective.</p>
+                <p class="text-slate-600 mb-6">Instructional technology offers transformative potential but also comes with significant challenges. Understanding both sides is the first step toward effective implementation. A truly "paperless classroom" is often more of a long-term vision than an immediate reality, as technology is best used to enhance, not entirely replace, traditional methods (Minty & Moll, 2020).</p>
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="bg-green-50 p-6 rounded-xl border border-green-200">
-                         <img src="https://storage.googleapis.com/gemini-prod/images/5f04523e-6a56-4d2c-af66-3d23b3206584.jpeg" alt="Two elementary students collaborating on an educational game on a tablet." class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
                         <h3 class="text-xl font-semibold text-green-800 mb-4 flex items-center">
                             <span class="text-2xl mr-3">🚀</span> Benefits of Integration
                         </h3>
                         <ul class="space-y-3 text-green-900">
-                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Enhanced Engagement:</strong> Interactive tools and multimedia can significantly increase student motivation.</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Personalized Learning:</strong> Differentiate instruction to meet diverse needs and allow students to learn at their own pace.</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Access to Information:</strong> Expand learning beyond the classroom with a universe of online resources.</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>21st-Century Skills:</strong> Develop critical skills in collaboration, communication, creativity, and critical thinking.</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Improved Collaboration:</strong> Facilitate teamwork and strengthen the home-school connection.</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Enhanced Engagement:</strong> Interactive tools, digital games, and multimedia can significantly increase student motivation and engagement in learning (Project Tomorrow, 2018).</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Personalized Learning:</strong> Technology allows teachers to differentiate instruction, providing support for struggling students and challenges for advanced learners, enabling them to progress at their own pace.</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Access to Information:</strong> The internet expands learning beyond the classroom, giving students access to a vast universe of primary sources, expert opinions, and real-world data.</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Development of 21st-Century Skills:</strong> Using technology helps students develop critical skills in digital literacy, collaboration, communication, and creative problem-solving.</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">✅</span><strong>Improved Collaboration:</strong> Cloud-based tools facilitate teamwork among students and can strengthen the home-school connection by making learning more visible to parents.</li>
                         </ul>
                     </div>
                     <div class="bg-red-50 p-6 rounded-xl border border-red-200">
@@ -120,11 +126,54 @@
                             <span class="text-2xl mr-3">🚦</span> Challenges to Consider
                         </h3>
                         <ul class="space-y-3 text-red-900">
-                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>The Digital Divide:</strong> Inequitable access to technology and internet at home can disadvantage some students.</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Teacher Training:</strong> Effective use requires ongoing professional development, a significant challenge for school leaders (Project Tomorrow, 2018).</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Cost and Maintenance:</strong> Technology requires significant financial investment and ongoing support.</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Distraction and Misuse:</strong> Clear policies are essential to keep students on task (Russo, 2018).</li>
-                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Rapid Pace of Change:</strong> Keeping up with the latest tools and trends is a constant challenge.</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>The Digital Divide:</strong> Inequitable access to devices and high-speed internet at home can create significant learning gaps between students (DeNiro, 2020).</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Teacher Training:</strong> Providing effective, ongoing professional development is cited as the most significant challenge by school leaders in using digital resources effectively (Project Tomorrow, 2018).</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Cost and Infrastructure:</strong> Technology requires a significant financial investment for devices, software, and the robust network infrastructure needed to support them.</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Distraction and Misuse:</strong> Without clear guidelines and classroom management, technology can become a source of distraction. Clear Acceptable Use Policies are essential (Russo, 2018).</li>
+                            <li class="flex items-start"><span class="mr-2 mt-1">⚠️</span><strong>Overwhelming Choices:</strong> With millions of apps available, teachers need a simplified process to identify and evaluate high-quality, pedagogically sound options (Schmidt et al., 2017).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech in Action Section -->
+            <section id="tech-in-action" class="content-section">
+                <h2 class="text-2xl font-bold text-sky-700 mb-2">Types of Technology in Learning</h2>
+                <p class="text-slate-600 mb-6">Instructional technology is a broad category encompassing a wide variety of tools and platforms. The key is to match the right type of tool to the specific learning objective. Below are some common categories of technologies used in modern instruction.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-2">Communication & Collaboration</h3>
+                        <p class="text-sm text-slate-600">Tools that enable students and teachers to connect, share ideas, and work together on projects, regardless of physical location.</p>
+                        <ul class="mt-2 text-sm list-disc list-inside">
+                            <li>Cloud-based document editors (e.g., Google Docs)</li>
+                            <li>Video conferencing platforms (e.g., Zoom, Google Meet)</li>
+                            <li>Discussion forums and social media</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-2">Content Creation & Presentation</h3>
+                        <p class="text-sm text-slate-600">Applications that allow students to demonstrate their learning in creative, multimedia formats.</p>
+                        <ul class="mt-2 text-sm list-disc list-inside">
+                            <li>Presentation software (e.g., PowerPoint, Google Slides)</li>
+                            <li>Digital video and audio editors</li>
+                            <li>Infographic and animation tools</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-2">Assessment & Feedback</h3>
+                        <p class="text-sm text-slate-600">Tools that help educators gauge student understanding in real-time and provide timely, constructive feedback.</p>
+                        <ul class="mt-2 text-sm list-disc list-inside">
+                            <li>Online quizzing and polling apps (e.g., Socrative, Kahoot)</li>
+                            <li>Digital portfolios</li>
+                            <li>Annotation and feedback tools</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-2">Learning Management Systems (LMS)</h3>
+                        <p class="text-sm text-slate-600">Centralized platforms that organize course content, assignments, grades, and communication.</p>
+                        <ul class="mt-2 text-sm list-disc list-inside">
+                            <li>Blackboard, Canvas, Moodle</li>
+                            <li>Google Classroom</li>
                         </ul>
                     </div>
                 </div>
@@ -133,86 +182,91 @@
             <!-- Making Decisions Section -->
             <section id="decisions" class="content-section">
                 <h2 class="text-2xl font-bold text-sky-700 mb-2">A Framework for Sound Decisions</h2>
-                <p class="text-slate-600 mb-6">Making the right technology choices is a critical leadership function that requires a structured approach. The following steps provide a roadmap for a process that is collaborative, informed, and focused on learning outcomes above all else.</p>
+                <p class="text-slate-600 mb-6">Making the right technology choices requires a structured, collaborative, and reflective process. Adopting a systematic approach ensures that decisions are driven by student needs, not by the appeal of a new tool. The following steps provide a practical roadmap.</p>
                 <div class="space-y-6">
-                    <div class="p-4 bg-slate-50 rounded-lg"><strong>Step 1: Start with Learning Goals.</strong> The first question should always be: "What do we want students to learn?" Technology selection is secondary to your pedagogical objectives (Shinas & Steckel, 2017).</div>
-                    <div class="p-4 bg-slate-50 rounded-lg flex items-center gap-4">
-                        <img src="https://storage.googleapis.com/gemini-prod/images/a5e06579-2476-47b2-bd7e-e47820ab5165.jpeg" alt="Diverse educators collaborating around a whiteboard with sticky notes, planning a technology strategy." class="w-1/3 rounded-lg shadow-sm">
-                        <div>
-                            <h4 class="font-bold mb-2">Step 2: Conduct a Needs Assessment.</h4>
-                            <p>Understand your starting point. Survey teachers to identify their current skills, beliefs, and barriers to technology integration. This data provides the foundation for your strategic plan (O’Reilly, 2016).</p>
+                    <div class="p-6 bg-slate-50 rounded-lg shadow-sm border-l-4 border-sky-500">
+                        <h3 class="font-bold text-lg mb-2">Step 1: Start with Learning Goals, Not Technology</h3>
+                        <p>The process must begin with curriculum and instructional goals. Before considering any device or application, ask: "What are the key concepts and skills we want students to master?" Technology selection is secondary; it is a tool to achieve these pedagogical objectives, not the objective itself (Shinas & Steckel, 2017). This ensures that instruction remains the primary focus.</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 rounded-lg shadow-sm border-l-4 border-sky-500">
+                        <h3 class="font-bold text-lg mb-2">Step 2: Conduct a Thorough Needs Assessment</h3>
+                        <p>To plan effectively, you must understand your starting point. A needs assessment helps identify the gap between the current state and the desired end state. This involves collecting data on key indicators such as teachers' self-assessed skill levels, current technology use, beliefs about technology's role in education, and perceived barriers to access. This foundational data allows you to "determine priorities and allocate limited resources to activities that will have the greatest impact" (O’Reilly, 2016, p. 131).</p>
+                    </div>
+                     <div class="p-6 bg-slate-50 rounded-lg shadow-sm border-l-4 border-sky-500">
+                        <h3 class="font-bold text-lg mb-2">Step 3: Use a Decision-Making Framework (TPACK)</h3>
+                        <p class="mb-4">Frameworks bring necessary structure to the evaluation process. The Technological Pedagogical Content Knowledge (TPACK) framework is an invaluable tool for this. It emphasizes the need for teachers to develop a complex understanding of the relationships between technology, pedagogy, and content (Shinas & Steckel, 2017). A teacher with strong TPACK doesn't just know how to use a tool; they know how to use that tool to teach a specific concept effectively.</p>
+                        <div class="video-container rounded-xl my-4 shadow-md">
+                           <iframe src="https://www.youtube.com/embed/yMQiHJsePOM?si=z8K8gGq7H2K8sU9U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded-lg">
-                        <p class="mb-4"><strong>Step 3: Use a Decision-Making Framework.</strong> Frameworks bring structure to your evaluation process. The TPACK framework is essential for blending knowledge types for effective tech integration (Shinas & Steckel, 2017). Click on the diagram to learn more.</p>
-                        <div class="flex flex-col items-center">
-                            <div id="tpack-diagram" class="relative w-[350px] h-[250px] my-8">
-                                <div id="tk" class="tpack-circle bg-red-200 text-red-800" style="top: 0; left: 100px;">Technology</div>
-                                <div id="pk" class="tpack-circle bg-blue-200 text-blue-800" style="bottom: 0; left: 0;">Pedagogy</div>
-                                <div id="ck" class="tpack-circle bg-yellow-200 text-yellow-800" style="bottom: 0; right: 0;">Content</div>
-                            </div>
-                            <div id="tpack-info" class="mt-4 p-4 bg-sky-50 text-sky-800 rounded-lg w-full max-w-lg min-h-[100px] transition-all duration-300">Click a circle to see its description.</div>
-                        </div>
+                    <div class="p-6 bg-slate-50 rounded-lg shadow-sm border-l-4 border-sky-500">
+                        <h3 class="font-bold text-lg mb-2">Step 4: Involve Stakeholders and Foster Collaboration</h3>
+                        <p>Technology decisions should not be made in isolation. The most effective and sustainable choices come from a collaborative process that includes input from those who will use the technology every day: teachers, students, IT staff, and even parents. This creates buy-in and ensures that the chosen tools are practical for the classroom environment and align with the broader school culture.</p>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded-lg"><strong>Step 4: Involve Stakeholders.</strong> Ensure the decision-making process is collaborative. The best choices are made with input from the people who will be using the technology every day: teachers, students, and IT staff.</div>
                 </div>
             </section>
 
             <!-- Building Support Section -->
             <section id="support" class="content-section">
                 <h2 class="text-2xl font-bold text-sky-700 mb-2">Creating a Culture of Support</h2>
-                 <img src="https://storage.googleapis.com/gemini-prod/images/4250269f-3687-4a0b-9340-9a4f4d1e2e1e.jpeg" alt="A professional and collaborative meeting of a diverse school technology committee around a table." class="w-full h-64 object-cover rounded-xl mb-6 shadow-md">
-                <p class="text-slate-600 mb-6">Successful technology integration depends on a strong support system. This means providing effective training for educators and establishing a dedicated team to guide the vision. Explore the key elements of building this supportive environment below.</p>
-                <div class="space-y-4" id="accordion-container">
-                    <div class="accordion-item border border-slate-200 rounded-lg">
-                        <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg hover:bg-slate-50 transition-colors">
-                            <span>The Need for Effective Training</span>
-                            <span class="accordion-icon transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content px-4">
-                            <div class="py-4 border-t border-slate-200 text-slate-600 space-y-2">
-                                <p>Effective training is more than a one-time workshop. A comprehensive professional development plan should include:</p>
-                                <ul class="list-disc list-inside pl-2">
-                                    <li><strong>Initial Training:</strong> Hands-on sessions when new hardware or software is introduced.</li>
-                                    <li><strong>Ongoing Professional Development:</strong> Focus on pedagogical integration, not just the technical "how-to."</li>
-                                    <li><strong>Self-Directed Learning:</strong> Empower teachers to learn through webinars, blogs, and online communities (Project Tomorrow, 2018).</li>
-                                    <li><strong>Peer Coaching:</strong> Encourage teachers to learn from each other and share best practices.</li>
-                                </ul>
+                <p class="text-slate-600 mb-6">A new device or software is only as good as the support system around it. Successful technology integration depends on building a robust culture of support that empowers educators through effective training and provides clear, collaborative leadership through a dedicated committee. This approach ensures that technology is not just adopted, but truly integrated into the fabric of teaching and learning.</p>
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                     <div class="space-y-4 md:w-1/2" id="accordion-container">
+                        <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg hover:bg-slate-50 transition-colors">
+                                <span>The Need for Effective Training</span>
+                                <span class="accordion-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="accordion-content px-4">
+                                <div class="py-4 border-t border-slate-200 text-slate-600 space-y-3">
+                                    <p>Effective training is the most critical factor for success. It must be ongoing and focused on pedagogy. A comprehensive professional development plan should include:</p>
+                                    <ul class="list-disc list-inside pl-2 space-y-2">
+                                        <li><strong>Initial Training:</strong> Hands-on sessions are crucial when new hardware or software is first introduced to build foundational skills.</li>
+                                        <li><strong>Ongoing Professional Development:</strong> Shift the focus from technical skills to pedagogical integration. Training should help teachers answer "how can I use this to improve learning?" not just "how do I turn this on?"</li>
+                                        <li><strong>Personalized, Self-Directed Learning:</strong> Just as we want personalized learning for students, teachers benefit from it too. Empower teachers to pursue their own professional growth through webinars, online courses, and professional learning networks (Project Tomorrow, 2018).</li>
+                                        <li><strong>Peer Coaching and Collaboration:</strong> Create structured opportunities for teachers to observe one another, share successes and failures, and collaboratively design lessons.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg hover:bg-slate-50 transition-colors">
+                                <span>How to Form a Technology Committee</span>
+                                 <span class="accordion-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="accordion-content px-4">
+                                <div class="py-4 border-t border-slate-200 text-slate-600 space-y-3">
+                                    <p>A technology committee provides essential oversight and ensures decisions are made collaboratively. To form one successfully:</p>
+                                    <ol class="list-decimal list-inside pl-2 space-y-2">
+                                        <li><strong>Define the Purpose:</strong> Clearly articulate the committee's mission. Is it advisory? Does it set policy? A clear purpose prevents confusion later.</li>
+                                        <li><strong>Ensure Diverse Representation:</strong> A committee's strength is its diverse perspectives. Include teachers from different grade levels and subjects, administrators, IT staff, librarians, parents, and, where appropriate, students.</li>
+                                        <li><strong>Establish a Formal Charter:</strong> A written charter is the "basic foundation for an effective board subcommittee" (Price & Lankton, 2018, p. 110). It should specify the committee's composition, processes, functions, and responsibilities.</li>
+                                        <li><strong>Empower the Committee:</strong> To be effective, the committee must have the real authority to pilot new tools, make meaningful recommendations, and influence budget and policy decisions.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="accordion-item border border-slate-200 rounded-lg">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg hover:bg-slate-50 transition-colors">
+                                <span>Role of the Technology Committee</span>
+                                 <span class="accordion-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="accordion-content px-4">
+                                <div class="py-4 border-t border-slate-200 text-slate-600 space-y-3">
+                                    <p>The committee is the strategic engine for technology integration. Its key responsibilities should include:</p>
+                                    <ul class="list-disc list-inside pl-2 space-y-2">
+                                        <li><strong>Strategic Planning:</strong> Guiding the development, implementation, and regular review of the district's long-term technology plan.</li>
+                                        <li><strong>Evaluation and Recommendation:</strong> Systematically researching, piloting, and making evidence-based recommendations on new hardware, software, and platforms. This includes reviewing risk management and security (Price & Lankton, 2018).</li>
+                                        <li><strong>Monitoring Implementation & Gathering Feedback:</strong> Regularly assessing the progress of technology initiatives and serving as a primary channel for feedback from the school community.</li>
+                                        <li><strong>Advocacy:</strong> Making the case to leadership for necessary funding, professional development resources, and supportive policies.</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                     <div class="accordion-item border border-slate-200 rounded-lg">
-                        <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg hover:bg-slate-50 transition-colors">
-                            <span>How to Form a Technology Committee</span>
-                             <span class="accordion-icon transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content px-4">
-                            <div class="py-4 border-t border-slate-200 text-slate-600 space-y-2">
-                                <p>A technology committee can be a powerful force for driving your initiatives. To form one successfully:</p>
-                                <ol class="list-decimal list-inside pl-2">
-                                    <li><strong>Define the Purpose:</strong> Clearly articulate the committee's mission and goals.</li>
-                                    <li><strong>Ensure Diverse Representation:</strong> Include teachers, administrators, IT staff, librarians, parents, and students.</li>
-                                    <li><strong>Establish a Charter:</strong> Create a formal document outlining roles, responsibilities, and processes (Price & Lankton, 2018).</li>
-                                    <li><strong>Empower the Committee:</strong> Give the committee real authority to make recommendations and influence decisions.</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="accordion-item border border-slate-200 rounded-lg">
-                        <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-lg hover:bg-slate-50 transition-colors">
-                            <span>Role of the Technology Committee</span>
-                             <span class="accordion-icon transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content px-4">
-                            <div class="py-4 border-t border-slate-200 text-slate-600 space-y-2">
-                                <p>The committee should be an active and influential group with key responsibilities, including:</p>
-                                <ul class="list-disc list-inside pl-2">
-                                    <li><strong>Developing the Technology Vision & Plan:</strong> Play a central role in creating and updating the long-term technology plan.</li>
-                                    <li><strong>Evaluating & Recommending Technology:</strong> Research, pilot, and make evidence-based recommendations.</li>
-                                    <li><strong>Monitoring Implementation:</strong> Track progress and gather feedback on what's working.</li>
-                                    <li><strong>Advocating for Resources:</strong> Make the case for necessary funding, training, and support.</li>
-                                </ul>
-                            </div>
+                     <div class="md:w-1/2">
+                        <div class="video-container rounded-xl shadow-md">
+                           <iframe src="https://www.youtube.com/embed/PMxrL6lo4Ds?si=P7l6fM7n2u5P9W8z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
@@ -221,26 +275,40 @@
             <!-- Key Considerations Section -->
             <section id="considerations" class="content-section">
                  <h2 class="text-2xl font-bold text-sky-700 mb-2">Practical & Policy Considerations</h2>
-                 <p class="text-slate-600 mb-6">Beyond choosing tools and training staff, several foundational elements must be in place. These considerations relate to the digital environment you create, the rules that govern it, and the infrastructure that supports it all.</p>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="p-6 bg-slate-50 rounded-lg text-center flex flex-col items-center">
-                        <img src="https://storage.googleapis.com/gemini-prod/images/05179244-934d-4581-9b16-953e34a65fc7.jpeg" alt="Diverse students interacting safely online with social media icons." class="w-full h-40 object-cover rounded-md mb-4 shadow-sm">
-                        <h3 class="font-bold mb-1">Digital Citizenship</h3>
-                        <p class="text-sm text-slate-600">It is essential to teach students how to be safe, responsible, and respectful online, covering topics like online safety, privacy, and digital etiquette (Hamilton, 2016).</p>
-                    </div>
-                    <div class="p-6 bg-slate-50 rounded-lg text-center flex flex-col items-center justify-between">
-                        <div>
-                            <div class="text-4xl mb-4">📜</div>
-                            <h3 class="font-bold mb-1">Acceptable Use Policy (AUP)</h3>
-                            <p class="text-sm text-slate-600">Develop and regularly update a clear AUP that outlines the rules and expectations for using school technology for all users (Russo, 2018).</p>
+                 <p class="text-slate-600 mb-6">Beyond choosing tools and training staff, several foundational elements must be in place. These considerations relate to the digital environment you create, the rules that govern it, and the infrastructure that supports it all. Addressing these areas proactively will prevent common pitfalls and ensure a safer, more equitable, and more effective technology ecosystem.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-slate-800 mb-4">Digital Citizenship</h3>
+                        <p class="text-slate-600 mb-4">Teaching students how to behave "safely and responsibly in the digital world" is a fundamental responsibility (Hamilton, 2016, p. 11). This is not a one-time lesson but an ongoing conversation integrated across the curriculum. Key topics include online safety, protecting personal information, understanding a digital footprint, respecting intellectual property, and preventing cyberbullying. Partnering with parents is crucial to reinforce these skills at home.</p>
+                         <div class="video-container rounded-xl shadow-md">
+                           <iframe src="https://www.youtube.com/embed/yfZN4_gP5kQ?si=A5X-Vv6yF8f_b7fB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
-                    <div class="p-6 bg-slate-50 rounded-lg text-center flex flex-col items-center justify-between">
-                        <div>
-                            <div class="text-4xl mb-4">🏗️</div>
-                            <h3 class="font-bold mb-1">Robust Infrastructure</h3>
-                            <p class="text-sm text-slate-600">A reliable and robust technology infrastructure, including high-speed Wi-Fi, is the non-negotiable foundation for success (DeNiro, 2020).</p>
-                        </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-slate-800 mb-4">Acceptable Use Policy (AUP)</h3>
+                        <p class="text-slate-600 mb-4">An AUP is the foundational document that governs the use of all district technology. Given the rapid pace of technological change, it is critical that this policy is not left on a shelf. The AUP should be reviewed annually by a broad-based team to ensure it is up-to-date with current technology and legal precedents (Russo, 2018). It must clearly define appropriate use, outline consequences for misuse, and address issues like privacy, data security, and access for all users, including students, teachers, and staff.</p>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-4 mt-6">Robust Infrastructure</h3>
+                        <p class="text-slate-600">No technology initiative can succeed without a reliable foundation. Ubiquitous, high-speed Wi-Fi is no longer a luxury but a core utility. As students bring an increasing number of devices to campus, networks must be designed for saturation coverage and high throughput (DeNiro, 2020). Strategic planning must account for network scalability, security, and predictable funding models to avoid infrastructure becoming a barrier to learning.</p>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Author's Reflection Section -->
+            <section id="reflection" class="content-section">
+                <h2 class="text-2xl font-bold text-sky-700 mb-4">Author's Reflection</h2>
+                <p class="text-slate-500 italic mb-6">By Theodore Werkheiser</p>
+                <div class="space-y-6">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-lg text-slate-800 mb-2">How does this guide reflect the way I value technology?</h3>
+                        <p class="text-slate-600">This guide reflects my belief that technology is a <strong>powerful tool</strong>, but it is only a tool. Its true value is realized not through its mere presence, but through its <strong>purposeful and thoughtful application</strong> to solve real problems in teaching and learning. I value technology as an enabler of personalization, a bridge to new information, and a catalyst for developing modern skills. However, I also recognize that without careful leadership, planning, and support, it can become a distraction or, worse, exacerbate existing inequities. This guide prioritizes the human elements of <strong>pedagogy, collaboration, and support</strong> as the foundation upon which successful technology integration is built.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-lg text-slate-800 mb-2">What instructional technology leadership skills are demonstrated in this guide's design?</h3>
+                        <p class="text-slate-600">The design of this interactive guide demonstrates several key leadership skills. First, <strong>strategic thinking</strong> is shown in the restructuring of linear information into a non-linear, user-centric format, allowing users to access information based on their immediate needs. Second, <strong>communication and synthesis</strong> are demonstrated by condensing complex research into accessible, actionable steps and summaries. Finally, the skill of <strong>user-centered design</strong> is evident in the choice of an interactive SPA format over a static document, prioritizing the end-user's experience and comprehension over simply presenting raw information. It is a shift from information delivery to knowledge construction.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="font-semibold text-lg text-slate-800 mb-2">How does a guide like this help others think systemically?</h3>
+                        <p class="text-slate-600">A guide like this encourages <strong>systemic thinking</strong> by moving beyond a narrow focus on "which app to buy." It presents technology integration as an <strong>interconnected system</strong> of components: pedagogy, training, infrastructure, policy, and people. The tabbed navigation itself visually represents these distinct but related domains. By showing how a decision in one area (like choosing a new device) has cascading effects on others (like training, AUPs, and infrastructure), it forces leaders to consider the <strong>entire ecosystem</strong>. This systemic view helps prevent isolated, ineffective technology purchases and fosters a more holistic, sustainable, and ultimately more successful integration strategy.</p>
                     </div>
                 </div>
             </section>
@@ -273,14 +341,19 @@
             <section id="references" class="content-section">
                 <h2 class="text-2xl font-bold text-sky-700 mb-4">References</h2>
                 <div class="space-y-4 text-slate-600 text-sm">
+                    <p class="reference-item">Chan Zuckerberg Initiative. (2023, March 15). <em>Building education technology that transforms classrooms</em> [Video]. YouTube. https://www.youtube.com/watch?v=PMxrL6lo4Ds</p>
+                    <p class="reference-item">Common Sense Education. (2016, July 12). <em>What is the TPACK Model?</em> [Video]. YouTube. https://www.youtube.com/watch?v=yMQiHJsePOM</p>
                     <p class="reference-item">DeNiro, M. (2020). Top wifi challenges in higher ed. <em>Campus Technology</em>, <em>Jan/Feb 2020</em>, 18-21.</p>
                     <p class="reference-item">Hamilton, B. (2016). Citizenship in the digital world. <em>Library Sparks</em>, <em>April 2016</em>, 11-14.</p>
+                    <p class="reference-item">Minty, R., & Moll, I. (2020). Gauteng paperless classrooms: Fantasy, fiction, or reality? <em>Mousaion, 38</em>(1), 1-16.</p>
                     <p class="reference-item">O’Reilly, E. N. (2016). Developing technology needs assessments for educational programs: An analysis of eight key indicators. <em>International Journal of Education and Development using Information and Communication Technology</em>, <em>12</em>(1), 129-143.</p>
                     <p class="reference-item">Price, J. B., & Lankton, N. (2018). A framework and guidelines for assessing and developing board-level information technology committee charters. <em>Journal of Information Systems</em>, <em>32</em>(1), 109-129.</p>
                     <p class="reference-item">Project Tomorrow. (2018). <em>The new learning leader: The emerging role of the agile school principal as digital evangelist and instructional leader</em>. Blackboard.</p>
+                    <p class="reference-item">Research School International (Burewala Campus). (2023, February 19). <em>Instructional Technology in Education : The Future of Learning</em> [Video]. YouTube. https://www.youtube.com/watch?v=SYxFOSTR2WM</p>
                     <p class="reference-item">Russo, C. J. (2018). Technology in schools: The only constant is change. <em>School Business Affairs</em>, <em>February 2018</em>, 35-38.</p>
                     <p class="reference-item">Schmidt, M. M., Lin, M. G., Paek, S., MacSuga-Gage, A., & Gage, N. A. (2017). Implementing project SIED: Special education teachers' perceptions of a simplified technology decision-making process for app identification and evaluation. <em>Journal of Special Education Technology</em>, <em>32</em>(1), 12-22.</p>
                     <p class="reference-item">Shinas, V. H., & Steckel, B. (2017). Technology integration for the 21st century classroom: Principles for effective planning. <em>The NERA Journal</em>, <em>52</em>(1), 1-6.</p>
+                    <p class="reference-item">Teachings in Education. (2018, September 19). <em>What is digital citizenship?</em> [Video]. YouTube. https://www.youtube.com/watch?v=yfZN4_gP5kQ</p>
                 </div>
             </section>
 
@@ -315,60 +388,29 @@
                 }
             });
 
-            const tpackDiagram = document.getElementById('tpack-diagram');
-            const tpackInfo = document.getElementById('tpack-info');
-            const tpackCircles = tpackDiagram.querySelectorAll('.tpack-circle');
-
-            const tpackData = {
-                'tk': "**Technological Knowledge (TK):** Understanding how to use various technologies, from basic tools to complex software.",
-                'pk': "**Pedagogical Knowledge (PK):** Deep knowledge about the processes and practices of teaching, including classroom management and instructional strategies.",
-                'ck': "**Content Knowledge (CK):** Expertise in the subject matter being taught.",
-                'tck': "**Technological Content Knowledge (TCK):** Knowing how technology can be used to represent and teach specific content (e.g., using simulation software for a science concept).",
-                'pck': "**Pedagogical Content Knowledge (PCK):** The sweet spot of teaching—knowing how to teach a particular subject in a way that is understandable to students.",
-                'tpk': "**Technological Pedagogical Knowledge (TPK):** Understanding how teaching and learning can change when particular technologies are used (e.g., using collaborative online documents changes how group work is managed).",
-                'tpack': "**Technological Pedagogical Content Knowledge (TPACK):** The synthesis of all three knowledge types. It's the basis for effective educational technology integration."
-            };
-
-            tpackDiagram.addEventListener('click', (e) => {
-                const target = e.target.closest('.tpack-circle');
-                if (target) {
-                    const circleId = target.id;
-                    let infoText = tpackData[circleId] || 'Click a circle to see its description.';
-                    
-                    const rect = tpackDiagram.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    if (y > 75 && y < 150 && x > 60 && x < 140) infoText = tpackData['tpk'];
-                    if (y > 75 && y < 150 && x > 160 && x < 240) infoText = tpackData['tck'];
-                    if (y > 150 && x > 100 && x < 200) infoText = tpackData['pck'];
-                    if (y > 120 && y < 170 && x > 125 && x < 175) infoText = tpackData['tpack'];
-
-                    tpackInfo.innerHTML = infoText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                    tpackCircles.forEach(c => c.style.border = 'none');
-                    target.style.border = '3px solid #0284c7';
-                }
-            });
-
             const accordionContainer = document.getElementById('accordion-container');
-            accordionContainer.addEventListener('click', (e) => {
-                const header = e.target.closest('.accordion-header');
-                if (!header) return;
+            if (accordionContainer) {
+                accordionContainer.addEventListener('click', (e) => {
+                    const header = e.target.closest('.accordion-header');
+                    if (!header) return;
 
-                const item = header.parentElement;
-                const content = header.nextElementSibling;
-                const wasActive = header.classList.contains('active');
-                
-                item.parentElement.querySelectorAll('.accordion-item').forEach(otherItem => {
-                    otherItem.querySelector('.accordion-header').classList.remove('active');
-                    otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
+                    const item = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const wasActive = header.classList.contains('active');
+                    
+                    item.parentElement.querySelectorAll('.accordion-item').forEach(otherItem => {
+                        if (otherItem !== item || wasActive) {
+                           otherItem.querySelector('.accordion-header').classList.remove('active');
+                           otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
+                        }
+                    });
+
+                    if (!wasActive) {
+                        header.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
                 });
-
-                if (!wasActive) {
-                    header.classList.add('active');
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
-            });
+            }
         });
     </script>
 </body>
